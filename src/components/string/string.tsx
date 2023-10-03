@@ -25,7 +25,6 @@ export const StringComponent: React.FC = () => {
     });
     setOutput(stateArray);
     for (let i = 0; i < length / 2; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       stateArray[length - 1 - i] = {
         value: arr[i],
         color: ElementStates.Changing,
@@ -34,11 +33,12 @@ export const StringComponent: React.FC = () => {
         value: arr[length - 1 - i],
         color: ElementStates.Changing,
       };
-      setOutput(stateArray);
+      setOutput([...stateArray]); // Add this line to see the changes
       await new Promise((resolve) => setTimeout(resolve, 1000));
       stateArray[i].color = ElementStates.Modified;
       stateArray[length - 1 - i].color = ElementStates.Modified;
-      setOutput(stateArray);
+      setOutput([...stateArray]);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     setIsLoader(false);
     return stateArray;
@@ -70,7 +70,7 @@ export const StringComponent: React.FC = () => {
           />
           <Button
             disabled={!input || input.length < 1}
-            // isLoader={isLoader}
+            isLoader={isLoader}
             onClick={handleClick}
             text="Развернуть"
           />
@@ -81,7 +81,6 @@ export const StringComponent: React.FC = () => {
               key={index}
               state={element.color}
               letter={element.value}
-              extraClass={index === output.length / 2 - 1 ? style.center : ""}
             />
           ))}
         </div>
