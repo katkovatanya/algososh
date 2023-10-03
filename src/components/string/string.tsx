@@ -35,7 +35,6 @@ export const StringComponent: React.FC = () => {
         color: ElementStates.Changing,
       };
       setOutput(stateArray);
-      // swap(arr, i, length - 1 - i);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       stateArray[i].color = ElementStates.Modified;
       stateArray[length - 1 - i].color = ElementStates.Modified;
@@ -44,6 +43,9 @@ export const StringComponent: React.FC = () => {
     setIsLoader(false);
     return stateArray;
   };
+
+
+
 
   const handleClick = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
