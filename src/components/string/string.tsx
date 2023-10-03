@@ -33,7 +33,7 @@ export const StringComponent: React.FC = () => {
         value: arr[length - 1 - i],
         color: ElementStates.Changing,
       };
-      setOutput([...stateArray]); // Add this line to see the changes
+      setOutput([...stateArray]); 
       await new Promise((resolve) => setTimeout(resolve, 1000));
       stateArray[i].color = ElementStates.Modified;
       stateArray[length - 1 - i].color = ElementStates.Modified;
