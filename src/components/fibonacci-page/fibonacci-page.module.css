@@ -13,8 +13,12 @@
 }
 
 .circles {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-columns: repeat(10, minmax(0, 1fr));
   column-gap: 16px;
+  row-gap: 50px;
   margin: 100px auto 0;
-  max-width: 100%;
+  max-width: 1240px;
 }

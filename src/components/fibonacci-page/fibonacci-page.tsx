@@ -23,7 +23,7 @@ export const FibonacciPage: React.FC = () => {
           resultArray.push(resultArray[i - 2] + resultArray[i - 1]);
         }
         setOutput([...resultArray]);
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
       }
     }
     setIsLoader(false);
@@ -48,18 +48,23 @@ export const FibonacciPage: React.FC = () => {
             onChange={onChangeInput}
           />
           <Button
-            disabled={!input || input.length < 1}
+            disabled={!input || input.length < 1 || Number(input) > 19}
             isLoader={isLoader}
             onClick={handleClick}
             text="Рассчитать"
           />
         </form>
         <div className={style.circles}>
-        {output && output.map((element, index) => {
-          return(
-            <Circle letter={element.toString()} tail={index.toString()} key={index} />
-          )
-        })}
+          {output &&
+            output.map((element, index) => {
+              return (
+                <Circle
+                  letter={element.toString()}
+                  tail={index.toString()}
+                  key={index}
+                />
+              );
+            })}
         </div>
       </div>
     </SolutionLayout>
