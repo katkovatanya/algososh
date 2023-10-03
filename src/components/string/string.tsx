@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -10,10 +10,12 @@ import { ElementStates, OutputArray } from "../../types/element-states";
 export const StringComponent: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<OutputArray<string>>([]);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
 
   const reverseString = async (str: string) => {
     const arr = str.split("");
     const length = arr.length;
+    setIsLoader(true);
     let stateArray: OutputArray<string> = [];
     stateArray = arr.map((item, i) => {
       return (stateArray[i] = {
@@ -39,12 +41,15 @@ export const StringComponent: React.FC = () => {
       stateArray[length - 1 - i].color = ElementStates.Modified;
       setOutput(stateArray);
     }
+    setIsLoader(false);
     return stateArray;
   };
 
-  const handleClick = async () => {
-    const reversedArray = await reverseString(input);
-    setOutput(reversedArray);
+  const handleClick = (
+    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
+  ): void => {
+    e.preventDefault();
+    reverseString(input);
   };
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +59,7 @@ export const StringComponent: React.FC = () => {
   return (
     <SolutionLayout title="Строка">
       <div className={style.page}>
-        <div className={style.box}>
+        <form onSubmit={handleClick} className={style.box}>
           <Input
             maxLength={11}
             isLimitText={true}
@@ -63,10 +68,11 @@ export const StringComponent: React.FC = () => {
           />
           <Button
             disabled={!input || input.length < 1}
+            // isLoader={isLoader}
             onClick={handleClick}
             text="Развернуть"
           />
-        </div>
+        </form>
         <div className={style.circles}>
           {output.map((element, index) => (
             <Circle
