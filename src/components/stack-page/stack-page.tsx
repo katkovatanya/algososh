@@ -4,11 +4,11 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./stack-page.module.css";
-import StackArr from "./Stack";
+import Stack from "./Stack";
 import { ElementStates } from "../../types/element-states";
 
 export const StackPage: React.FC = () => {
-  const [stack] = useState(() => new StackArr<string>());
+  const [stack] = useState(() => new Stack<string>());
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<string[]>([]);
   const [isStarted, setIsStarted] = useState<"add" | "del" | "clear" | null>(
