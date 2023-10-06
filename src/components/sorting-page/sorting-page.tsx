@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import styles from "./sorting-page.module.css";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
@@ -25,6 +25,13 @@ export const SortingPage: React.FC = () => {
     }
     return arr;
   }
+
+  useEffect(() => {
+    let array: OutputArray<number> = randomArr(3, 17).map((item) => {
+      return { value: item, color: ElementStates.Default };
+    });
+    setOutput(array);
+  }, []);
 
   const handleClickCreateArray = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>

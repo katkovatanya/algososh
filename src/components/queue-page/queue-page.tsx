@@ -25,7 +25,8 @@ export const QueuePage: React.FC = () => {
     setOutput([...queue.getElements()]);
   }, []);
 
-  const handleClickAdd = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (
       input &&
       input !== "" &&
@@ -74,7 +75,7 @@ export const QueuePage: React.FC = () => {
   return (
     <SolutionLayout title="Очередь">
       <div className={styles.page}>
-        <form className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.box}>
             <Input
               maxLength={4}
@@ -84,9 +85,9 @@ export const QueuePage: React.FC = () => {
             />
             <Button
               text="Добавить"
-              onClick={handleClickAdd}
               disabled={!input || input === ""}
               isLoader={isStarted === "add"}
+              type="submit"
             />
             <Button
               text="Удалить"

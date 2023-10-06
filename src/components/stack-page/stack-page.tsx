@@ -16,7 +16,8 @@ export const StackPage: React.FC = () => {
   );
   const [highlight, setHighlight] = useState<number | null>(null);
 
-  const onClickAdd = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (input && input !== "") {
       setIsStarted("add");
       setHighlight(output.length);
@@ -56,7 +57,7 @@ export const StackPage: React.FC = () => {
   return (
     <SolutionLayout title="Стек">
       <div className={styles.page}>
-        <form className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.box}>
             <Input
               maxLength={4}
@@ -66,9 +67,9 @@ export const StackPage: React.FC = () => {
             />
             <Button
               text="Добавить"
-              onClick={onClickAdd}
               disabled={!input || input === ""}
               isLoader={isStarted === "add"}
+              type="submit"
             />
             <Button
               text="Удалить"

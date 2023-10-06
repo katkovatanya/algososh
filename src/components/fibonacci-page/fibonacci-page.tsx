@@ -7,11 +7,12 @@ import { Button } from "../ui/button/button";
 import { useState } from "react";
 
 export const FibonacciPage: React.FC = () => {
-  const [input, setInput] = useState<string>();
+  const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<number[]>([]);
   const [isLoader, setIsLoader] = useState<boolean>(false);
 
-  const handleClick = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsLoader(true);
     const resultArray: number[] = [];
     const number = Number(input);
@@ -36,7 +37,7 @@ export const FibonacciPage: React.FC = () => {
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
       <div className={style.page}>
-        <form className={style.box}>
+        <form onSubmit={handleSubmit} className={style.box}>
           <Input
             placeholder="Введите число"
             type="number"
@@ -50,8 +51,8 @@ export const FibonacciPage: React.FC = () => {
           <Button
             disabled={!input || input.length < 1 || Number(input) > 19}
             isLoader={isLoader}
-            onClick={handleClick}
             text="Рассчитать"
+            type="submit"
           />
         </form>
         <div className={style.circles}>
