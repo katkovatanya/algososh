@@ -1,0 +1,25 @@
+.box {
+  display: flex;
+  max-width: 980px;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  column-gap: 40px;
+}
+
+.buttons {
+  display: flex;
+  column-gap: 12px;
+}
+
+.container {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  column-gap: 5px;
+  margin: 50px auto 0;
+}
