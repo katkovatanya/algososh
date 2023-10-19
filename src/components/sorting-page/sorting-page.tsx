@@ -166,6 +166,7 @@ export const SortingPage: React.FC = () => {
         </div>
         <div className={styles.buttons}>
           <Button
+            data-testid="sort-desc-button"
             text="По возрастанию"
             sorting={Direction.Ascending}
             isLoader={isStarted === "Ascending"}
@@ -173,6 +174,7 @@ export const SortingPage: React.FC = () => {
             disabled={isStarted === "Descending"}
           />
           <Button
+            data-testid="sort-asc-button"
             text="По убыванию"
             sorting={Direction.Descending}
             isLoader={isStarted === "Descending"}
@@ -181,24 +183,27 @@ export const SortingPage: React.FC = () => {
           />
         </div>
         <Button
+          data-testid="set-array-button"
           text="Новый массив"
           onClick={handleClickCreateArray}
           disabled={isStarted !== null}
         />
       </div>
-      <div className={styles.container}>
+      <div data-testid="container" className={styles.container}>
         {output &&
           output.map((element, index) => {
             return (
-              <Column
-                index={element.value}
-                state={
-                  firstSelected === index || secondSelected === index
-                    ? ElementStates.Changing
-                    : element.color
-                }
-                key={index}
-              />
+              <div data-testid="array-element" key={index}>
+                <Column
+                  index={element.value}
+                  state={
+                    firstSelected === index || secondSelected === index
+                      ? ElementStates.Changing
+                      : element.color
+                  }
+                  key={index}
+                />
+              </div>
             );
           })}
       </div>
