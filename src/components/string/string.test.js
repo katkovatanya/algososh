@@ -4,8 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 
 describe('Тестирование алгоритма разворота строки', () => {
 
-
-
   it('с чётным количеством символов', async () => {
     render(<BrowserRouter> <StringComponent /> </BrowserRouter>);
 
@@ -22,8 +20,6 @@ describe('Тестирование алгоритма разворота стр�
       expect(screen.getAllByTestId('circle')[3]).toHaveTextContent('t');
     }, { timeout: 3000 })
   });
-
-
 
   it('с нечетным количеством символов', async () => {
     render(<BrowserRouter> <StringComponent /> </BrowserRouter>);

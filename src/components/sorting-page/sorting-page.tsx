@@ -7,6 +7,7 @@ import { Direction } from "../../types/direction";
 import { Column } from "../ui/column/column";
 import { OutputArray } from "../../types/element-states";
 import { ElementStates } from "../../types/element-states";
+import { sortSelect, sortBubble, randomArr } from "./utils";
 
 export const SortingPage: React.FC = () => {
   const [sortingType, setSortingType] = useState<"select" | "bubble">("select");
@@ -17,15 +18,6 @@ export const SortingPage: React.FC = () => {
   const [firstSelected, setFirstSelected] = useState<number | null>();
   const [secondSelected, setSecondSelected] = useState<number | null>();
 
-  function randomArr(minLen: number = 3, maxLen: number = 17): number[] {
-    const arr: number[] = [];
-    const len = Math.floor(Math.random() * (maxLen - minLen + 1)) + minLen;
-    for (let i = 0; i < len; i++) {
-      arr.push(Math.floor(Math.random() * 101));
-    }
-    return arr;
-  }
-
   useEffect(() => {
     let array: OutputArray<number> = randomArr(3, 17).map((item) => {
       return { value: item, color: ElementStates.Default };
@@ -33,112 +25,51 @@ export const SortingPage: React.FC = () => {
     setOutput(array);
   }, []);
 
-  const handleClickCreateArray = (
-    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
-  ): void => {
-    e.preventDefault();
+  const handleClickCreateArray = async () => {
     let array: OutputArray<number> = randomArr(3, 17).map((item) => {
       return { value: item, color: ElementStates.Default };
     });
     setOutput(array);
   };
 
-  const handleClickAscending = () => {
+  const handleClickAscending = async () => {
     setIsStarted("Ascending");
-    console.log(sortingType);
     sortingType === "select"
-      ? selectionSort(Direction.Ascending)
-      : bubbleSort(Direction.Ascending);
+      ? await sortSelect(
+          Direction.Ascending,
+          output,
+          setOutput,
+          setFirstSelected,
+          setSecondSelected
+        )
+      : await sortBubble(
+          Direction.Ascending,
+          output,
+          setOutput,
+          setFirstSelected,
+          setSecondSelected
+        );
     setIsStarted(null);
   };
-  const handleClickDescending = () => {
+
+  const handleClickDescending = async () => {
     setIsStarted("Descending");
-    console.log(sortingType);
     sortingType === "select"
-      ? selectionSort(Direction.Descending)
-      : bubbleSort(Direction.Descending);
+      ? await sortBubble(
+          Direction.Descending,
+          output,
+          setOutput,
+          setFirstSelected,
+          setSecondSelected
+        )
+      : await sortBubble(
+          Direction.Descending,
+          output,
+          setOutput,
+          setFirstSelected,
+          setSecondSelected
+        );
     setIsStarted(null);
-  };
-
-  const swap = (
-    arr: OutputArray<number>,
-    firstIndex: number,
-    secondIndex: number
-  ) => {
-    const temp = arr[firstIndex];
-    arr[firstIndex] = arr[secondIndex];
-    arr[secondIndex] = temp;
-    return arr;
-  };
-
-  const selectionSort = async (type: Direction) => {
-    let tempArray = output;
-    let minimalIndex: number;
-    for (let i = 0; i < tempArray.length; i++) {
-      setFirstSelected(i);
-      minimalIndex = i;
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      for (let j = i + 1; j < tempArray.length; j++) {
-        setSecondSelected(j);
-        if (type === Direction.Ascending) {
-          minimalIndex =
-            tempArray[minimalIndex].value < tempArray[j].value
-              ? minimalIndex
-              : j;
-        }
-        if (type === Direction.Descending) {
-          minimalIndex =
-            tempArray[minimalIndex].value > tempArray[j].value
-              ? minimalIndex
-              : j;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-      if (minimalIndex === i) {
-        tempArray[i].color = ElementStates.Modified;
-      } else {
-        tempArray = swap(tempArray, i, minimalIndex);
-        tempArray[i].color = ElementStates.Modified;
-      }
-      setOutput([...tempArray]);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-    setFirstSelected(null);
-    setSecondSelected(null);
-  };
-
-  const bubbleSort = async (type: Direction) => {
-    let tempArray = output;
-
-    for (let i = 0; i < tempArray.length; i++) {
-      for (let j = 0; j < tempArray.length - 1 - i; j++) {
-        setFirstSelected(j);
-        setSecondSelected(j + 1);
-        if (type === Direction.Ascending) {
-          if (tempArray[j].value > tempArray[j + 1].value) {
-            tempArray[j].color = ElementStates.Default;
-            tempArray[j + 1].color = ElementStates.Default;
-            setOutput([...tempArray]);
-            tempArray = swap(tempArray, j, j + 1);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-        }
-        if (type === Direction.Descending) {
-          if (tempArray[j].value < tempArray[j + 1].value) {
-            tempArray[j].color = ElementStates.Default;
-            tempArray[j + 1].color = ElementStates.Default;
-            setOutput([...tempArray]);
-            tempArray = swap(tempArray, j, j + 1);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-        }
-      }
-      tempArray[tempArray.length - 1 - i].color = ElementStates.Modified;
-      setOutput([...tempArray]);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-    setFirstSelected(null);
-    setSecondSelected(null);
   };
 
   return (

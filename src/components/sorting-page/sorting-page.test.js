@@ -1,65 +1,35 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { SortingPage } from './sorting-page';
-import { BrowserRouter } from "react-router-dom";
+import { Direction } from "../../types/direction";
+import { ElementStates } from "../../types/element-states";
+import { sortSelect, sortBubble } from "./utils";
 
-describe('Тестирование алгоритмов сортировки выбором и пузырьком', () => {
+jest.setTimeout(10000);
 
-  it('Пустой массив', async () => {
+describe.each([
+  ['пустой массив', [], []],
+  ['массив из одного элемента', 
+    [{value: '1', color: ElementStates.Default},
+    ], 
+    [{value: '1', color: ElementStates.Modified},
+    ]
+  ],
+  ['массив из нескольких элементов', 
+    [{value: '1', color: ElementStates.Default},
+    {value: '3', color: ElementStates.Default},
+    {value: '2', color: ElementStates.Default},
+    ], 
 
-    render(<BrowserRouter> <SortingPage /> </BrowserRouter>);
-
-    const container = screen.getByTestId('container');
-
-    expect(container).not.toBeEmptyDOMElement()
-
+    [{value: '1', color: ElementStates.Modified},
+    {value: '2', color: ElementStates.Modified},
+    {value: '3', color: ElementStates.Modified},
+    ],
+  ],
+])('Корректно сортирует', (name, input, expected) => {
+  it(`сортировкой выбором ${name}`, async () => {
+    const output = await sortSelect(Direction.Ascending, input, (fake) => {}, (fake) => {}, (fake) => {});
+    expect(output).toEqual(expected);
   });
-
-  it('массив из одного элемента', () => {
-
-    const { getByTestId, getAllByTestId } = render(<BrowserRouter> <SortingPage /> </BrowserRouter>);
-
-    const newArrayButton = getByTestId('set-array-button');
-    fireEvent.click(newArrayButton);
-
-    const arrayElement = getAllByTestId('array-element')[0];
-    expect(arrayElement).toBeInTheDocument();
-  });
-
-  it('массив из нескольких элементов', () => {
-
-    render(<BrowserRouter> <SortingPage /> </BrowserRouter>);
-
-    screen.getByTestId('set-array-button').click();
-
-    const arrayElement = screen.getAllByTestId('array-element');
-    expect(arrayElement).not.toHaveLength(0);
-  });
-
-  it('По возрастанию', () => {
-
-    render(<BrowserRouter> <SortingPage /> </BrowserRouter>);
-
-
-    screen.getByTestId('set-array-button').click();
-
-    screen.getByTestId('sort-asc-button').click();
-
-    const arrayElement = screen.getAllByTestId('array-element');
-    const values = arrayElement.map(element => parseInt(element.textContent));
-    const sortedValues = [...values].sort((a, b) => a - b);
-    expect(sortedValues).toEqual(sortedValues);
-  });
-
-  it('По убыванию', () => {
-    render(<BrowserRouter> <SortingPage /> </BrowserRouter>);
-
-    screen.getByTestId('set-array-button').click();
-
-    screen.getByTestId('sort-desc-button').click();
-
-    const arrayElement = screen.getAllByTestId('array-element');
-    const values = arrayElement.map(element => parseInt(element.textContent));
-    const sortedValues = [...values].sort((a, b) => b - a);
-    expect(sortedValues).toEqual(sortedValues);
+  it(`сортировкой пузырьком ${name}`, async () => {
+    const output = await sortBubble(Direction.Ascending, input, (fake) => {}, (fake) => {}, (fake) => {});
+    expect(output).toEqual(expected);
   });
 });
