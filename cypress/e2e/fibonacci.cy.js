@@ -1,9 +1,11 @@
+import { inputSelector, circleSelector } from "../../src/constants/cypress";
+
 describe('Проверка работы страницы "Последовательность Фибоначчи"', function () {
 
   beforeEach(() => {
     cy.visit("/fibonacci");
     cy.contains("Последовательность Фибоначчи");
-    cy.get('[class^=input_input__]').first().as('input');
+    cy.get(inputSelector).first().as('input');
     cy.contains('Рассчитать').first().as('button');
   });
 
@@ -17,7 +19,7 @@ describe('Проверка работы страницы "Последовате
     cy.get('@input').should('be.empty').type(inputValue);
     cy.get('@button').click();
     cy.wait(1000);
-    cy.get('[class^=circle_circle__]').each(($el, index) => {
+    cy.get(circleSelector).each(($el, index) => {
       cy.get($el)
         .contains(result[index])
     });

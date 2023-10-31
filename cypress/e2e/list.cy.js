@@ -1,11 +1,11 @@
-import { greenCircle, purpleCircle, blueCircle } from '../../src/constants/cypress'
+import { greenCircle, purpleCircle, blueCircle, inputSelector, circleSelector, circleSmallSelector } from '../../src/constants/cypress'
 
 describe('Проверка работы страницы "Связный список"', function () {
   beforeEach(() => {
     cy.visit("/list");
     cy.contains("Связный список");
-    cy.get('[class^=input_input__]').first().as('value');
-    cy.get('[class^=input_input__]').last().as('index');
+    cy.get(inputSelector).first().as('value');
+    cy.get(inputSelector).last().as('index');
     cy.contains('Добавить в head').first().as('addHead');
     cy.contains('Добавить в tail').first().as('addTail');
     cy.contains('Удалить из head').first().as('delHead');
@@ -30,7 +30,7 @@ describe('Проверка работы страницы "Связный спи�
       .should('be.disabled');
   });
   it('отрисовка дефолтного списка', function () {
-    cy.get('[class*=circle_circle__]').each(($el) => {
+    cy.get(circleSelector).each(($el) => {
       cy.get($el).should("have.css", "border-color", blueCircle).contains(/\S{1,4}/);
     });
   });
@@ -38,15 +38,15 @@ describe('Проверка работы страницы "Связный спи�
     const inputValue = 10;
     cy.get('@value').should('be.empty').type(inputValue);
     cy.get('@addHead').click();
-    cy.get('[class*=circle_small__]')
+    cy.get(circleSmallSelector)
       .first()
       .should("have.css", "border-color", purpleCircle)
       .contains(inputValue)
-    cy.get('[class*=circle_circle__]')
+    cy.get(circleSelector)
       .first()
       .should("have.css", "border-color", greenCircle)
       .contains(inputValue)
-    cy.get('[class*=circle_circle__]')
+    cy.get(circleSelector)
       .first()
       .should("have.css", "border-color", blueCircle)
       .contains(inputValue)
@@ -58,15 +58,15 @@ describe('Проверка работы страницы "Связный спи�
     const inputValue = 10;
     cy.get('@value').should('be.empty').type(inputValue);
     cy.get('@addTail').click();
-    cy.get('[class*=circle_small__]')
+    cy.get(circleSmallSelector)
       .first()
       .should("have.css", "border-color", purpleCircle)
       .contains(inputValue)
-    cy.get('[class*=circle_circle__]')
+    cy.get(circleSelector)
       .last()
       .should("have.css", "border-color", greenCircle)
       .contains(inputValue)
-    cy.get('[class*=circle_circle__]')
+    cy.get(circleSelector)
       .last()
       .should("have.css", "border-color", blueCircle)
       .contains(inputValue)
@@ -81,37 +81,37 @@ describe('Проверка работы страницы "Связный спи�
     cy.get('@index').should('be.empty').type(inputIndex);
     cy.get('@addByIndex').click();
     for (let i = 0; i <= inputIndex; i++) {
-      cy.get('[class*=circle_small__]')
+      cy.get(circleSmallSelector)
         .first()
         .should("have.css", "border-color", purpleCircle)
         .contains(inputValue)
       cy.wait(500);
     };
-    cy.get('[class^=circle_circle__]')
+    cy.get(circleSelector)
       .eq(inputIndex)
       .should("have.css", "border-color", greenCircle)
       .contains(inputValue);
-    cy.get('[class^=circle_circle__]')
+    cy.get(circleSelector)
       .eq(inputIndex)
       .should("have.css", "border-color", blueCircle)
       .contains(inputValue);
   });
   it('удаление элемента из head', function () {
     cy.get('@delHead').click();
-    cy.get('[class^=circle_circle__]').its('length').then((size) => {
-      cy.get('[class*=circle_small__]')
+    cy.get(circleSelector).its('length').then((size) => {
+      cy.get(circleSmallSelector)
         .first()
         .should("have.css", "border-color", purpleCircle);
-      cy.get('[class^=circle_circle__]').its('length').should('eq', size - 2);
+      cy.get(circleSelector).its('length').should('eq', size - 2);
     });
   });
   it('удаление элемента из tail', function () {
     cy.get('@delTail').click();
-    cy.get('[class^=circle_circle__]').its('length').then((size) => {
-      cy.get('[class*=circle_small__]')
+    cy.get(circleSelector).its('length').then((size) => {
+      cy.get(circleSmallSelector)
         .first()
         .should("have.css", "border-color", purpleCircle);
-      cy.get('[class^=circle_circle__]').its('length').should('eq', size - 2);
+      cy.get(circleSelector).its('length').should('eq', size - 2);
     });
   });
   it('удаление элемента по индексу', function () {
@@ -119,18 +119,18 @@ describe('Проверка работы страницы "Связный спи�
     cy.get('@index').should('be.empty').type(inputIndex);
     cy.get('@delByIndex').click();
     for (let i = 0; i < inputIndex; i++) {
-      cy.get('[class*=circle_circle__]')
+      cy.get(circleSelector)
         .eq(i)
         .should("have.css", "border-color", purpleCircle);
       if (i < inputIndex - 1) {
         cy.wait(500);
       }
     };
-    cy.get('[class^=circle_circle__]').its('length').then((size) => {
-      cy.get('[class*=circle_small__]')
+    cy.get(circleSelector).its('length').then((size) => {
+      cy.get(circleSmallSelector)
         .first()
         .should("have.css", "border-color", purpleCircle);
-      cy.get('[class^=circle_circle__]').its('length').should('eq', size - 2);
+      cy.get(circleSelector).its('length').should('eq', size - 2);
     });
   });
 

@@ -1,10 +1,10 @@
-import { greenCircle, purpleCircle, blueCircle } from '../../src/constants/cypress'
+import { greenCircle, purpleCircle, blueCircle, inputSelector, circleSelector } from '../../src/constants/cypress'
 
 describe('Проверка работы страницы "строка"', function () {
   beforeEach(() => {
     cy.visit("/recursion");
     cy.contains("Строка");
-    cy.get('[class^=input_input__]').first().as('input');
+    cy.get(inputSelector).first().as('input');
     cy.contains('Развернуть').first().as('button');
   });
   it('кнопка отключена при пустом инпуте', function () {
@@ -34,17 +34,17 @@ describe('Проверка работы страницы "строка"', functi
     ];
     cy.get('@input').should('be.empty').type(step1);
     cy.get('@button').click();
-    cy.get('[class^=circle_circle__]').each(($el, index) => {
+    cy.get(circleSelector).each(($el, index) => {
       cy.get($el)
         .should("have.css", "border-color", step1color[index])
         .contains(step2[index])
     });
-    cy.get('[class^=circle_circle__]').each(($el, index) => {
+    cy.get(circleSelector).each(($el, index) => {
       cy.get($el)
         .should("have.css", "border-color", step2color[index])
         .contains(step2[index])
     });
-    cy.get('[class^=circle_circle__]').each(($el, index) => {
+    cy.get(circleSelector).each(($el, index) => {
       cy.get($el)
         .should("have.css", "border-color", step3color[index])
         .contains(step3[index])

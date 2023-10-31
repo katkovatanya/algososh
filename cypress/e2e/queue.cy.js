@@ -1,10 +1,10 @@
-import { purpleCircle, blueCircle } from '../../src/constants/cypress'
+import { purpleCircle, blueCircle, inputSelector, circleSelector } from '../../src/constants/cypress'
 
 describe('Проверка работы страницы "Очередь"', function () {
   beforeEach(() => {
     cy.visit("/queue");
     cy.contains("Очередь");
-    cy.get('[class^=input_input__]').first().as('input');
+    cy.get(inputSelector).first().as('input');
     cy.contains('Добавить').first().as('add');
     cy.contains('Удалить').first().as('del');
     cy.contains('Очистить').first().as('clear');
@@ -23,7 +23,7 @@ describe('Проверка работы страницы "Очередь"', func
     const inputValue = 2;
     cy.get('@input').should('be.empty').type(inputValue);
     cy.get('@add').click();
-    cy.get('[class^=circle_circle__]')
+    cy.get(circleSelector)
       .should("have.css", "border-color", purpleCircle)
       .contains(inputValue)
       .parent()
@@ -31,32 +31,32 @@ describe('Проверка работы страницы "Очередь"', func
       .contains('head')
       .parent()
       .contains('tail')
-    cy.get('[class^=circle_circle__]')
+    cy.get(circleSelector)
       .should("have.css", "border-color", blueCircle)
   });
   it('удаление работает корректно', function () {
-    if (cy.get('[class^=circle_circle__]').first().contains('tail').should("have.length", 0)) {
+    if (cy.get(circleSelector).first().contains('tail').should("have.length", 0)) {
       cy.get('@input').should('be.empty').type(2);
       cy.get('@add').click();
     }
     cy.get('@del').click();
-    cy.get('[class^=circle_circle__]')
+    cy.get(circleSelector)
       .first()
       .should("have.css", "border-color", purpleCircle)
-    cy.get('[class^=circle_circle__]')
+    cy.get(circleSelector)
       .first()
       .should("have.css", "border-color", blueCircle)
-    cy.get('[class^=circle_circle__]').each( ($el) => {
+    cy.get(circleSelector).each( ($el) => {
       cy.get($el).contains('tail').should("have.length", 0);
     });
   });
   it('очистка работает корректно', function () {
-    if (cy.get('[class^=circle_circle__]').first().contains('tail').should("have.length", 0)) {
+    if (cy.get(circleSelector).first().contains('tail').should("have.length", 0)) {
       cy.get('@input').should('be.empty').type(2);
       cy.get('@add').click();
     }
     cy.get('@clear').click();
-    cy.get('[class^=circle_circle__]').each( ($el) => {
+    cy.get(circleSelector).each( ($el) => {
       cy.get($el).contains('head').should("have.length", 0);
       cy.get($el).should("have.css", "border-color", blueCircle);
     });
