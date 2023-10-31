@@ -7,7 +7,7 @@ describe('Тестирование алгоритма разворота стр�
   it('с чётным количеством символов', async () => {
     render(<BrowserRouter> <StringComponent /> </BrowserRouter>);
 
-    const button = screen.getByTestId('button');
+    const button = screen.getByTestId('reverse-button');
     const input = screen.getByTestId('input');
 
     fireEvent.change(input, { target: { value: 'test' } });
@@ -24,7 +24,7 @@ describe('Тестирование алгоритма разворота стр�
   it('с нечетным количеством символов', async () => {
     render(<BrowserRouter> <StringComponent /> </BrowserRouter>);
 
-    const button = screen.getByTestId('button');
+    const button = screen.getByTestId('reverse-button');
     const input = screen.getByTestId('input');
 
     fireEvent.change(input, { target: { value: 'test1' } });
@@ -42,7 +42,7 @@ describe('Тестирование алгоритма разворота стр�
   it('с одним символом', async () => {
     render(<BrowserRouter> <StringComponent /> </BrowserRouter>);
 
-    const button = screen.getByTestId("button");
+    const button = screen.getByTestId("reverse-button");
     const input = screen.getByTestId("input");
 
     fireEvent.change(input, { target: { value: 't' } });
@@ -57,7 +57,7 @@ describe('Тестирование алгоритма разворота стр�
   it('пустая строка', async () => {
     render(<BrowserRouter> <StringComponent /> </BrowserRouter>);
 
-    const button = screen.getByTestId("button");
+    const button = screen.getByTestId("reverse-button");
     const input = screen.getByTestId("input");
 
     fireEvent.change(input, { target: { value: '' } });

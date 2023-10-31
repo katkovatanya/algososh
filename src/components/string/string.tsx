@@ -67,7 +67,7 @@ export const StringComponent: React.FC = () => {
             onChange={onChangeInput}
           />
           <Button
-            data-testid="button"
+            data-testid="reverse-button"
             disabled={!input || input.length < 1}
             isLoader={isLoader}
             onClick={handleClick}
