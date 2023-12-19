@@ -33,7 +33,7 @@ export const StringComponent: React.FC = () => {
         value: arr[length - 1 - i],
         color: ElementStates.Changing,
       };
-      setOutput([...stateArray]); 
+      setOutput([...stateArray]);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       stateArray[i].color = ElementStates.Modified;
       stateArray[length - 1 - i].color = ElementStates.Modified;
@@ -43,9 +43,6 @@ export const StringComponent: React.FC = () => {
     setIsLoader(false);
     return stateArray;
   };
-
-
-
 
   const handleClick = (
     e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
@@ -63,12 +60,14 @@ export const StringComponent: React.FC = () => {
       <div className={style.page}>
         <form onSubmit={handleClick} className={style.box}>
           <Input
+            data-testid="input"
             maxLength={11}
             isLimitText={true}
             value={input}
             onChange={onChangeInput}
           />
           <Button
+            data-testid="reverse-button"
             disabled={!input || input.length < 1}
             isLoader={isLoader}
             onClick={handleClick}
@@ -77,11 +76,13 @@ export const StringComponent: React.FC = () => {
         </form>
         <div className={style.circles}>
           {output.map((element, index) => (
-            <Circle
-              key={index}
-              state={element.color}
-              letter={element.value}
-            />
+            <div key={index} data-testid="circle">
+              <Circle
+                key={index}
+                state={element.color}
+                letter={element.value}
+              />
+            </div>
           ))}
         </div>
       </div>
